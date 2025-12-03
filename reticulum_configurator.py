@@ -737,44 +737,19 @@ TCP_INTERFACES = {
     },
 }
 
-# Default config template
-DEFAULT_CONFIG = """# This is the default Reticulum config file.
-# You should probably edit it to suit your needs.
-
-[reticulum]
-
-# Enable transport allows your node to route
-# traffic for other nodes on the network.
+# Default config template - matches rnsd expected format
+DEFAULT_CONFIG = """[reticulum]
 enable_transport = False
-
-# Share this instance's destinations over
-# connected interfaces.
 share_instance = Yes
-
-# The shared instance is accessible by other
-# programs in the same directory or by
-# specifying the shared instance port.
 shared_instance_port = 37428
-
-# Where to store identity and configuration data.
-# Default is ~/.reticulum
 instance_control_port = 37429
-
-# Panic on unrecoverable error will cause the
-# program to exit immediately when encountering
-# an unrecoverable error.
 panic_on_interface_error = No
 
 [logging]
-# Valid log levels are 0 through 7:
-#   0: Critical  1: Error   2: Warning
-#   3: Notice    4: Info    5: Verbose
-#   6: Debug     7: Extreme
 loglevel = 4
 
 [interfaces]
-  # The AutoInterface enables communication with
-  # all other Reticulum nodes on the same LAN.
+
   [[Default Interface]]
     type = AutoInterface
     enabled = yes
@@ -950,13 +925,14 @@ class ReticulumConfigurator:
     
     def get_setting(self, section, key, default=""):
         """Get a setting value from config"""
-        # Pattern to find section and key
-        section_pattern = rf'\[{section}\](.*?)(?=\[[^\[]|\Z)'
+        # Pattern to find section and key (not interface subsections)
+        section_pattern = rf'\[{re.escape(section)}\]\s*\n(.*?)(?=\n\[[^\[]|\Z)'
         section_match = re.search(section_pattern, self.config_content, re.DOTALL)
         
         if section_match:
             section_content = section_match.group(1)
-            key_pattern = rf'^{key}\s*=\s*(.+)$'
+            # Match key with optional leading whitespace
+            key_pattern = rf'^\s*{re.escape(key)}\s*=\s*(.+)$'
             key_match = re.search(key_pattern, section_content, re.MULTILINE)
             if key_match:
                 return key_match.group(1).strip()
@@ -965,33 +941,38 @@ class ReticulumConfigurator:
     
     def set_setting(self, section, key, value):
         """Set a setting value in config"""
-        # Check if section exists
-        section_pattern = rf'(\[{section}\])(.*?)(?=\[[^\[]|\Z)'
+        # Check if section exists (but not [interfaces] subsections)
+        section_pattern = rf'(\[{re.escape(section)}\])(\s*\n)(.*?)(?=\n\[[^\[]|\Z)'
         section_match = re.search(section_pattern, self.config_content, re.DOTALL)
         
         if section_match:
-            section_content = section_match.group(2)
-            key_pattern = rf'^({key}\s*=\s*)(.+)$'
+            section_content = section_match.group(3)
+            # Match key with optional leading whitespace
+            key_pattern = rf'^(\s*)({re.escape(key)}\s*=\s*)(.+)$'
             
             if re.search(key_pattern, section_content, re.MULTILINE):
-                # Replace existing key
+                # Replace existing key, preserving indentation
                 new_section = re.sub(
                     key_pattern,
-                    rf'\g<1>{value}',
+                    rf'\g<1>\g<2>{value}',
                     section_content,
                     flags=re.MULTILINE
                 )
                 self.config_content = self.config_content.replace(
                     section_match.group(0),
-                    section_match.group(1) + new_section
+                    section_match.group(1) + section_match.group(2) + new_section
                 )
             else:
-                # Add new key to section
-                new_content = section_match.group(0).rstrip() + f"\n{key} = {value}\n\n"
+                # Add new key to section (no indentation for main sections)
+                section_end = section_match.group(0).rstrip()
+                new_content = section_end + f"\n{key} = {value}\n"
                 self.config_content = self.config_content.replace(
                     section_match.group(0),
                     new_content
                 )
+        else:
+            # Section doesn't exist, add it
+            self.config_content = self.config_content.rstrip() + f"\n\n[{section}]\n{key} = {value}\n"
         
         self.has_changes = True
     
@@ -1001,22 +982,34 @@ class ReticulumConfigurator:
         if f"target_host = {host}" in self.config_content:
             return False
         
-        # Create interface block with proper indentation
-        interface_block = f"""
-  [[{name}]]
-    type = TCPClientInterface
-    enabled = yes
-    target_host = {host}
-    target_port = {port}
-"""
+        # Create interface block with proper indentation (2 spaces for [[]], 4 for properties)
+        # Using explicit spacing to ensure correct format
+        interface_block = "\n  [[" + name + "]]\n"
+        interface_block += "    type = TCPClientInterface\n"
+        interface_block += "    enabled = yes\n"
+        interface_block += "    target_host = " + host + "\n"
+        interface_block += "    target_port = " + port + "\n"
         
-        # Find [interfaces] section and append
+        # Find [interfaces] section and append properly
         if "[interfaces]" in self.config_content:
-            # Find the end of interfaces section
-            self.config_content = self.config_content.rstrip() + interface_block + "\n"
+            # Find the position after [interfaces] section to insert
+            # We need to find where the interfaces section content ends
+            interfaces_match = re.search(r'(\[interfaces\].*?)(?=\n\[[^\[]|\Z)', 
+                                         self.config_content, re.DOTALL)
+            if interfaces_match:
+                # Insert at the end of the interfaces section
+                insert_pos = interfaces_match.end()
+                self.config_content = (
+                    self.config_content[:insert_pos].rstrip() + 
+                    interface_block + 
+                    self.config_content[insert_pos:]
+                )
+            else:
+                # Fallback: append to end
+                self.config_content = self.config_content.rstrip() + interface_block
         else:
             # Add interfaces section
-            self.config_content += f"\n[interfaces]{interface_block}"
+            self.config_content = self.config_content.rstrip() + "\n\n[interfaces]" + interface_block
         
         self.has_changes = True
         return True
