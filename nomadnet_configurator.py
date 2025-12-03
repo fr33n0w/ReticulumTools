@@ -52,8 +52,9 @@ TRANSLATIONS = {
   [3] 🖥️  Edit text UI settings (intro time, colors, editor)
   [4] 📡 Edit node settings (enable hosting, announce interval)
   [5] 📄 Page hosting information
-  [6] 💾 Save and exit
-  [7] ❌ Exit without saving
+  [6] 🔧 Check & Fix configuration
+  [7] 💾 Save and exit
+  [8] ❌ Exit without saving
 
 """,
         "enter_choice": "Enter your choice: ",
@@ -70,6 +71,23 @@ TRANSLATIONS = {
         "new_value": "New value (press Enter to keep current): ",
         "enabled": "enabled",
         "disabled": "disabled",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      CHECK & FIX CONFIGURATION                               ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Checking configuration...",
+        "config_valid": "✅ Configuration is valid!",
+        "config_issues": "⚠️  Found {count} issue(s):",
+        "fix_issues": "🔧 Would you like to fix these issues? (y/n): ",
+        "fixing_issues": "🔧 Fixing issues...",
+        "issues_fixed": "✅ All issues fixed!",
+        "issue_invalid_colormode": "Invalid colormode value (must be 0 for dark or 1 for light)",
+        "issue_section_missing": "Missing section: [{section}]",
+        "testing_with_nomadnet": "🧪 Testing with nomadnet...",
+        "nomadnet_not_found": "⚠️  nomadnet not found - cannot validate config",
+        "nomadnet_test_passed": "✅ nomadnet validation passed!",
+        "nomadnet_test_failed": "❌ nomadnet validation failed:",
         "client_settings": """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                          CLIENT SETTINGS                                     ║
@@ -89,10 +107,11 @@ TRANSLATIONS = {
 
   [1] ⏱️  Intro screen time (seconds): {intro_time}
   [2] 🖊️  Default editor: {editor}
-  [3] 🌈 Colormode (dark/light/mono): {colormode}
-  [4] 🌙 Use glyphs (symbols): {glyphs}
-  [5] 🔠 Mouse support: {mouse}
-  [6] 🔙 Back to main menu
+  [3] 🎨 Theme (dark/light): {theme}
+  [4] 🌈 Colormode: {colormode}
+  [5] 🔤 Glyphs: {glyphs}
+  [6] 🖱️  Mouse support: {mouse}
+  [7] 🔙 Back to main menu
 
 """,
         "node_settings": """
@@ -161,12 +180,13 @@ To host pages on your NomadNet node, you need to:
         "enter_intro_time": "Enter intro screen time in seconds (0 to skip): ",
         "enter_announce_interval": "Enter announce interval in minutes (0 to disable): ",
         "enter_homepage": "Enter homepage filename (e.g., index.mu): ",
-        "select_colormode": "Select color mode:\n  [1] dark\n  [2] light\n  [3] mono\nChoice: ",
+        "select_theme": "Select theme:\n  [1] dark\n  [2] light\nChoice: ",
+        "select_colormode": "Select color depth:\n  [1] monochrome\n  [2] 16 colors\n  [3] 88 colors\n  [4] 256 colors\n  [5] 24bit (true color)\nChoice: ",
+        "select_glyphs": "Select glyph style:\n  [1] plain (ASCII only)\n  [2] unicode (default)\n  [3] nerdfont (requires Nerd Font)\nChoice: ",
         "setting_updated": "✅ Setting updated!",
         "enable_propagation": "Enable LXMF propagation node? (y/n): ",
         "enable_node": "Enable node hosting? (y/n): ",
         "enable_announce_startup": "Announce at startup? (y/n): ",
-        "enable_glyphs": "Use glyphs (symbols)? (y/n): ",
         "enable_mouse": "Enable mouse support? (y/n): ",
         "config_location": "📁 Config file location:",
         "view_config": "📋 Current Configuration:",
@@ -245,7 +265,7 @@ To host pages on your NomadNet node, you need to:
 
   [1] ⏱️  Tempo schermata intro (secondi): {intro_time}
   [2] 🖊️  Editor predefinito: {editor}
-  [3] 🌈 Modalità colore (dark/light/mono): {colormode}
+  [3] 🌈 Modalità colore (dark/light): {colormode}
   [4] 🌙 Usa glifi (simboli): {glyphs}
   [5] 🔠 Supporto mouse: {mouse}
   [6] 🔙 Torna al menu principale
@@ -317,7 +337,9 @@ Per ospitare pagine sul tuo nodo NomadNet, devi:
         "enter_intro_time": "Inserisci tempo schermata intro in secondi (0 per saltare): ",
         "enter_announce_interval": "Inserisci intervallo annunci in minuti (0 per disabilitare): ",
         "enter_homepage": "Inserisci nome file homepage (es. index.mu): ",
-        "select_colormode": "Seleziona modalità colore:\n  [1] dark\n  [2] light\n  [3] mono\nScelta: ",
+        "select_theme": "Seleziona tema:\n  [1] dark\n  [2] light\nScelta: ",
+        "select_colormode": "Seleziona profondità colore:\n  [1] monocromo\n  [2] 16 colori\n  [3] 88 colori\n  [4] 256 colori\n  [5] 24bit (true color)\nScelta: ",
+        "select_glyphs": "Seleziona stile glifi:\n  [1] plain (solo ASCII)\n  [2] unicode (predefinito)\n  [3] nerdfont (richiede Nerd Font)\nScelta: ",
         "setting_updated": "✅ Impostazione aggiornata!",
         "enable_propagation": "Abilitare nodo propagazione LXMF? (s/n): ",
         "enable_node": "Abilitare hosting nodo? (s/n): ",
@@ -401,7 +423,7 @@ Per ospitare pagine sul tuo nodo NomadNet, devi:
 
   [1] ⏱️  Tiempo pantalla intro (segundos): {intro_time}
   [2] 🖊️  Editor predeterminado: {editor}
-  [3] 🌈 Modo de color (dark/light/mono): {colormode}
+  [3] 🌈 Modo de color (dark/light): {colormode}
   [4] 🌙 Usar glifos (símbolos): {glyphs}
   [5] 🔠 Soporte de ratón: {mouse}
   [6] 🔙 Volver al menú principal
@@ -473,7 +495,9 @@ Para hospedar páginas en tu nodo NomadNet, necesitas:
         "enter_intro_time": "Ingresa tiempo de pantalla intro en segundos (0 para omitir): ",
         "enter_announce_interval": "Ingresa intervalo de anuncios en minutos (0 para deshabilitar): ",
         "enter_homepage": "Ingresa nombre de archivo de inicio (ej. index.mu): ",
-        "select_colormode": "Selecciona modo de color:\n  [1] dark\n  [2] light\n  [3] mono\nElección: ",
+        "select_theme": "Selecciona tema:\n  [1] dark\n  [2] light\nElección: ",
+        "select_colormode": "Selecciona profundidad de color:\n  [1] monocromo\n  [2] 16 colores\n  [3] 88 colores\n  [4] 256 colores\n  [5] 24bit (color verdadero)\nElección: ",
+        "select_glyphs": "Selecciona estilo de glifos:\n  [1] plain (solo ASCII)\n  [2] unicode (predeterminado)\n  [3] nerdfont (requiere Nerd Font)\nElección: ",
         "setting_updated": "✅ ¡Configuración actualizada!",
         "enable_propagation": "¿Habilitar nodo de propagación LXMF? (s/n): ",
         "enable_node": "¿Habilitar hosting de nodo? (s/n): ",
@@ -557,7 +581,7 @@ Para hospedar páginas en tu nodo NomadNet, necesitas:
 
   [1] ⏱️  Intro-Bildschirmzeit (Sekunden): {intro_time}
   [2] 🖊️  Standard-Editor: {editor}
-  [3] 🌈 Farbmodus (dark/light/mono): {colormode}
+  [3] 🌈 Farbmodus (dark/light): {colormode}
   [4] 🌙 Glyphen verwenden (Symbole): {glyphs}
   [5] 🔠 Maus-Unterstützung: {mouse}
   [6] 🔙 Zurück zum Hauptmenü
@@ -629,7 +653,9 @@ Um Seiten auf deinem NomadNet-Knoten zu hosten, musst du:
         "enter_intro_time": "Gib Intro-Bildschirmzeit in Sekunden ein (0 zum Überspringen): ",
         "enter_announce_interval": "Gib Ankündigungsintervall in Minuten ein (0 zum Deaktivieren): ",
         "enter_homepage": "Gib Homepage-Dateinamen ein (z.B. index.mu): ",
-        "select_colormode": "Wähle Farbmodus:\n  [1] dark\n  [2] light\n  [3] mono\nWahl: ",
+        "select_theme": "Wähle Theme:\n  [1] dark\n  [2] light\nWahl: ",
+        "select_colormode": "Wähle Farbtiefe:\n  [1] monochrom\n  [2] 16 Farben\n  [3] 88 Farben\n  [4] 256 Farben\n  [5] 24bit (True Color)\nWahl: ",
+        "select_glyphs": "Wähle Glyphenstil:\n  [1] plain (nur ASCII)\n  [2] unicode (Standard)\n  [3] nerdfont (erfordert Nerd Font)\nWahl: ",
         "setting_updated": "✅ Einstellung aktualisiert!",
         "enable_propagation": "LXMF-Propagierungsknoten aktivieren? (j/n): ",
         "enable_node": "Knoten-Hosting aktivieren? (j/n): ",
@@ -713,10 +739,11 @@ Um Seiten auf deinem NomadNet-Knoten zu hosten, musst du:
 
   [1] ⏱️  Время заставки (секунды): {intro_time}
   [2] 🖊️  Редактор по умолчанию: {editor}
-  [3] 🌈 Режим цвета (dark/light/mono): {colormode}
-  [4] 🌙 Использовать глифы (символы): {glyphs}
-  [5] 🔠 Поддержка мыши: {mouse}
-  [6] 🔙 Вернуться в главное меню
+  [3] 🎨 Тема (dark/light): {theme}
+  [4] 🌈 Глубина цвета: {colormode}
+  [5] 🔤 Глифы: {glyphs}
+  [6] 🖱️  Поддержка мыши: {mouse}
+  [7] 🔙 Вернуться в главное меню
 
 """,
         "node_settings": """
@@ -785,7 +812,9 @@ Um Seiten auf deinem NomadNet-Knoten zu hosten, musst du:
         "enter_intro_time": "Введите время заставки в секундах (0 для пропуска): ",
         "enter_announce_interval": "Введите интервал объявлений в минутах (0 для отключения): ",
         "enter_homepage": "Введите имя файла домашней страницы (напр. index.mu): ",
-        "select_colormode": "Выберите режим цвета:\n  [1] dark\n  [2] light\n  [3] mono\nВыбор: ",
+        "select_theme": "Выберите тему:\n  [1] dark\n  [2] light\nВыбор: ",
+        "select_colormode": "Выберите глубину цвета:\n  [1] monochrome\n  [2] 16 цветов\n  [3] 88 цветов\n  [4] 256 цветов\n  [5] 24bit (true color)\nВыбор: ",
+        "select_glyphs": "Выберите стиль глифов:\n  [1] plain (только ASCII)\n  [2] unicode (по умолчанию)\n  [3] nerdfont (требуется Nerd Font)\nВыбор: ",
         "setting_updated": "✅ Настройка обновлена!",
         "enable_propagation": "Включить узел распространения LXMF? (д/н): ",
         "enable_node": "Включить хостинг узла? (д/н): ",
@@ -805,29 +834,30 @@ Um Seiten auf deinem NomadNet-Knoten zu hosten, musst du:
 }
 
 # Default NomadNet config template
-DEFAULT_CONFIG = """# This is the default NomadNet config file.
-# You should edit it to suit your needs.
+# Based on actual NomadNet configuration format
+DEFAULT_CONFIG = """[logging]
+loglevel = 4
 
 [client]
 enable_client = yes
 user_interface = text
 downloads_path = ~/Downloads
+announce_at_start = yes
+try_propagation_on_send_fail = yes
 
 [textui]
 intro_time = 1
-colormode = dark
-editor = editor
-glyphs = yes
-mouse_enabled = yes
+theme = dark
+colormode = 256
+glyphs = unicode
+mouse_enabled = True
+editor = nano
 
 [node]
 enable_node = no
-node_name = None
-announce_at_start = yes
+node_name = My NomadNet Node
 announce_interval = 360
-
-[propagation]
-enable_propagation_node = no
+announce_at_start = yes
 
 """
 
@@ -1124,19 +1154,21 @@ class NomadNetConfigurator:
             
             # Get current values
             intro_time = self.get_setting("textui", "intro_time", "1")
-            editor = self.get_setting("textui", "editor", "editor")
-            colormode = self.get_setting("textui", "colormode", "dark")
-            glyphs = self.get_setting("textui", "glyphs", "yes")
-            mouse = self.get_setting("textui", "mouse_enabled", "yes")
+            editor = self.get_setting("textui", "editor", "nano")
+            theme = self.get_setting("textui", "theme", "dark")
+            colormode = self.get_setting("textui", "colormode", "256")
+            glyphs = self.get_setting("textui", "glyphs", "unicode")
+            mouse = self.get_setting("textui", "mouse_enabled", "True")
             
-            glyphs_str = self.t("enabled") if glyphs.lower() in ["yes", "true"] else self.t("disabled")
-            mouse_str = self.t("enabled") if mouse.lower() in ["yes", "true"] else self.t("disabled")
+            # Display mouse status
+            mouse_str = self.t("enabled") if mouse.lower() == "true" else self.t("disabled")
             
             print(self.t("textui_settings").format(
                 intro_time=intro_time,
                 editor=editor,
+                theme=theme,
                 colormode=colormode,
-                glyphs=glyphs_str,
+                glyphs=glyphs,
                 mouse=mouse_str
             ))
             
@@ -1157,28 +1189,40 @@ class NomadNetConfigurator:
                     time.sleep(1)
             
             elif choice == "3":
-                color_choice = input(self.t("select_colormode")).strip()
-                color_map = {"1": "dark", "2": "light", "3": "mono"}
-                if color_choice in color_map:
-                    self.set_setting("textui", "colormode", color_map[color_choice])
+                # Theme selection (dark/light)
+                theme_choice = input(self.t("select_theme")).strip()
+                theme_map = {"1": "dark", "2": "light"}
+                if theme_choice in theme_map:
+                    self.set_setting("textui", "theme", theme_map[theme_choice])
                     print(f"\n{self.t('setting_updated')}")
                     time.sleep(1)
             
             elif choice == "4":
-                response = input(self.t("enable_glyphs")).strip().lower()
-                new_value = "yes" if response == self.t("yes") else "no"
-                self.set_setting("textui", "glyphs", new_value)
-                print(f"\n{self.t('setting_updated')}")
-                time.sleep(1)
+                # Colormode selection
+                colormode_choice = input(self.t("select_colormode")).strip()
+                colormode_map = {"1": "monochrome", "2": "16", "3": "88", "4": "256", "5": "24bit"}
+                if colormode_choice in colormode_map:
+                    self.set_setting("textui", "colormode", colormode_map[colormode_choice])
+                    print(f"\n{self.t('setting_updated')}")
+                    time.sleep(1)
             
             elif choice == "5":
+                # Glyphs selection
+                glyphs_choice = input(self.t("select_glyphs")).strip()
+                glyphs_map = {"1": "plain", "2": "unicode", "3": "nerdfont"}
+                if glyphs_choice in glyphs_map:
+                    self.set_setting("textui", "glyphs", glyphs_map[glyphs_choice])
+                    print(f"\n{self.t('setting_updated')}")
+                    time.sleep(1)
+            
+            elif choice == "6":
                 response = input(self.t("enable_mouse")).strip().lower()
-                new_value = "yes" if response == self.t("yes") else "no"
+                new_value = "True" if response == self.t("yes") else "False"
                 self.set_setting("textui", "mouse_enabled", new_value)
                 print(f"\n{self.t('setting_updated')}")
                 time.sleep(1)
             
-            elif choice == "6":
+            elif choice == "7":
                 break
     
     def edit_node_settings(self):
@@ -1287,6 +1331,250 @@ class NomadNetConfigurator:
         except Exception as e:
             print(f"\n❌ Error creating folders: {e}")
     
+    def check_and_fix_config(self):
+        """Check configuration for issues and optionally fix them"""
+        self.clear_screen()
+        print(self.t("check_fix_title"))
+        print(f"{self.t('checking_config')}\n")
+        
+        issues = []
+        fixes = []
+        
+        # First, test with nomadnet if available
+        nomadnet_ok, nomadnet_error = self.test_with_nomadnet_silent()
+        
+        if nomadnet_ok:
+            print(f"  ✅ nomadnet validation passed!")
+            print(f"\n{self.t('config_valid')}")
+            input(f"\n{self.t('press_enter')}")
+            return
+        elif nomadnet_error:
+            print(f"  ❌ nomadnet validation failed:")
+            print(f"    {nomadnet_error}\n")
+        
+        # Check 1: Required sections exist
+        required_sections = ["client", "textui", "node"]
+        for section in required_sections:
+            if not re.search(rf'^\[{section}\]\s*$', self.config_content, re.MULTILINE):
+                issues.append(f"Missing required section: [{section}]")
+                if section == "client":
+                    fixes.append(("add_section", section, "enable_client = yes\nuser_interface = text"))
+                elif section == "textui":
+                    fixes.append(("add_section", section, "intro_time = 1\ntheme = dark\ncolormode = 256\nglyphs = unicode"))
+                elif section == "node":
+                    fixes.append(("add_section", section, "enable_node = no\nannounce_at_start = yes"))
+        
+        # Check 2: Colormode must be valid (monochrome, 16, 88, 256, 24bit)
+        # NOT integers like 0 or 1!
+        valid_colormodes = ["monochrome", "16", "88", "256", "24bit"]
+        colormode = self.get_setting("textui", "colormode", None)
+        if colormode is not None:
+            if colormode not in valid_colormodes:
+                issues.append(f"Invalid colormode '{colormode}' - must be one of: {', '.join(valid_colormodes)}")
+                fixes.append(("fix_setting", "textui", "colormode", "256"))
+        
+        # Check 3: Theme must be dark or light
+        theme = self.get_setting("textui", "theme", None)
+        if theme is not None:
+            if theme.lower() not in ["dark", "light"]:
+                issues.append(f"Invalid theme '{theme}' - must be 'dark' or 'light'")
+                fixes.append(("fix_setting", "textui", "theme", "dark"))
+        
+        # Check 4: Glyphs must be plain, unicode, or nerdfont
+        valid_glyphs = ["plain", "unicode", "nerdfont"]
+        glyphs = self.get_setting("textui", "glyphs", None)
+        if glyphs is not None:
+            if glyphs.lower() not in valid_glyphs:
+                issues.append(f"Invalid glyphs '{glyphs}' - must be one of: {', '.join(valid_glyphs)}")
+                fixes.append(("fix_setting", "textui", "glyphs", "unicode"))
+        
+        # Check 5: mouse_enabled should be True/False (NomadNet uses Python booleans)
+        mouse = self.get_setting("textui", "mouse_enabled", None)
+        if mouse is not None:
+            if mouse.lower() not in ["true", "false"]:
+                issues.append(f"Invalid mouse_enabled '{mouse}' - must be 'True' or 'False'")
+                fixes.append(("fix_setting", "textui", "mouse_enabled", "True"))
+        
+        # Check 6: enable_client, enable_node should be yes/no
+        yes_no_settings = [
+            ("client", "enable_client"),
+            ("node", "enable_node"),
+            ("node", "announce_at_start"),
+        ]
+        
+        for section, key in yes_no_settings:
+            value = self.get_setting(section, key, None)
+            if value is not None:
+                if value.lower() not in ["yes", "no"]:
+                    issues.append(f"Invalid value for '{key}': should be 'yes' or 'no', got '{value}'")
+                    fixes.append(("fix_setting", section, key, "yes" if value.lower() in ["true", "1"] else "no"))
+        
+        # Display results
+        if not issues:
+            if nomadnet_error:
+                print(f"\n  ⚠️  Could not automatically detect the issue.")
+                print(f"  Please check the config file manually for syntax errors.")
+                print(f"\n  Common NomadNet config issues:")
+                print(f"    • colormode must be: monochrome, 16, 88, 256, or 24bit")
+                print(f"    • theme must be: dark or light")
+                print(f"    • glyphs must be: plain, unicode, or nerdfont")
+                print(f"    • mouse_enabled must be: True or False")
+                print(f"    • enable_client/enable_node must be: yes or no")
+                
+                # Offer to rebuild
+                print(f"\n  Would you like to reset to default configuration?")
+                response = input(f"  This will preserve your basic settings (y/n): ").strip().lower()
+                if response == self.t("yes"):
+                    self.rebuild_config()
+            else:
+                print(f"\n{self.t('config_valid')}")
+        else:
+            print(f"\n{self.t('config_issues').format(count=len(issues))}\n")
+            for i, issue in enumerate(issues, 1):
+                print(f"  {i}. {issue}")
+            
+            print()
+            response = input(self.t("fix_issues")).strip().lower()
+            
+            if response == self.t("yes"):
+                print(f"\n{self.t('fixing_issues')}\n")
+                self.apply_fixes(fixes)
+                print(f"\n{self.t('issues_fixed')}")
+                
+                # Test again
+                nomadnet_ok, nomadnet_error = self.test_with_nomadnet_silent()
+                if nomadnet_ok:
+                    print(f"\n  ✅ nomadnet validation passed!")
+                elif nomadnet_error:
+                    print(f"\n  ❌ nomadnet validation still fails:")
+                    print(f"    {nomadnet_error}")
+        
+        input(f"\n{self.t('press_enter')}")
+    
+    def apply_fixes(self, fixes):
+        """Apply the list of fixes to the config"""
+        for fix in fixes:
+            fix_type = fix[0]
+            
+            if fix_type == "add_section":
+                section = fix[1]
+                content = fix[2]
+                self.config_content = self.config_content.rstrip() + f"\n\n[{section}]\n{content}\n"
+                print(f"  ✅ Added [{section}] section")
+                self.has_changes = True
+            
+            elif fix_type == "fix_setting":
+                section = fix[1]
+                key = fix[2]
+                value = fix[3]
+                self.set_setting(section, key, value)
+                print(f"  ✅ Fixed {key}: set to {value}")
+    
+    def test_with_nomadnet_silent(self):
+        """Test config with nomadnet silently, return (success, error_message)"""
+        import subprocess
+        
+        # Check if nomadnet is available
+        try:
+            result = subprocess.run(
+                ["which", "nomadnet"],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode != 0:
+                return None, None  # nomadnet not available
+        except Exception:
+            return None, None
+        
+        # Save config temporarily if there are changes
+        config_saved = False
+        original_on_disk = None
+        
+        if self.config_content != self.original_content:
+            try:
+                if self.config_path.exists():
+                    with open(self.config_path, 'r') as f:
+                        original_on_disk = f.read()
+                
+                with open(self.config_path, 'w') as f:
+                    f.write(self.config_content)
+                config_saved = True
+            except Exception as e:
+                return None, f"Could not save for testing: {e}"
+        
+        # Test by running nomadnet briefly
+        try:
+            result = subprocess.run(
+                ["nomadnet", "--version"],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            
+            # Check for config errors
+            combined = result.stdout + result.stderr
+            if "Error" in combined or "invalid" in combined.lower():
+                error_lines = [l for l in combined.split('\n') if 'Error' in l or 'invalid' in l.lower()]
+                error_msg = error_lines[0].strip() if error_lines else "Unknown error"
+                
+                # Restore original if we modified
+                if config_saved and original_on_disk is not None:
+                    with open(self.config_path, 'w') as f:
+                        f.write(original_on_disk)
+                
+                return False, error_msg
+            
+            return True, None
+            
+        except subprocess.TimeoutExpired:
+            return True, None  # If it runs without quick error, config is probably fine
+        except Exception as e:
+            return None, f"Test error: {e}"
+        finally:
+            if config_saved and original_on_disk is not None:
+                try:
+                    with open(self.config_path, 'w') as f:
+                        f.write(original_on_disk)
+                except:
+                    pass
+    
+    def rebuild_config(self):
+        """Rebuild config from scratch with defaults"""
+        print(f"\n  🔧 Rebuilding configuration...")
+        
+        # Try to preserve some settings
+        old_node_name = self.get_setting("node", "node_name", "My NomadNet Node")
+        old_downloads = self.get_setting("client", "downloads_path", "~/Downloads")
+        old_editor = self.get_setting("textui", "editor", "nano")
+        
+        self.config_content = f"""[logging]
+loglevel = 4
+
+[client]
+enable_client = yes
+user_interface = text
+downloads_path = {old_downloads}
+announce_at_start = yes
+
+[textui]
+intro_time = 1
+theme = dark
+colormode = 256
+glyphs = unicode
+mouse_enabled = True
+editor = {old_editor}
+
+[node]
+enable_node = no
+node_name = {old_node_name}
+announce_at_start = yes
+announce_interval = 360
+
+"""
+        self.has_changes = True
+        print(f"  ✅ Configuration rebuilt with defaults!")
+        print(f"  Please save and test with nomadnet.")
+    
     def main_menu(self):
         """Main menu loop"""
         while True:
@@ -1310,10 +1598,12 @@ class NomadNetConfigurator:
             elif choice == "5":
                 self.show_page_hosting_info()
             elif choice == "6":
+                self.check_and_fix_config()
+            elif choice == "7":
                 self.save_config()
                 print(f"\n{self.t('goodbye')}")
                 break
-            elif choice == "7":
+            elif choice == "8":
                 if self.config_content != self.original_content:
                     confirm = input(self.t("exit_without_save")).strip().lower()
                     if confirm != self.t("yes"):
