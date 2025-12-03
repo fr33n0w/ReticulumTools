@@ -154,6 +154,9 @@ More nodes: [reticulum.network/connect](https://reticulum.network/connect.html)
 - [LXMF](https://github.com/markqvist/LXMF) — Message protocol
 - [RMAP](https://rmap.world) — Reticulum Network Map
 
+For Fast and automatized Reticulum Package Updates, check also:
+- [FRUP](https://github.com/fr33n0w/frup) - Fast Reticulum Packages Updater
+
 ## 📄 License
 
 MIT License — Feel free to use, modify, and distribute.
