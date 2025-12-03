@@ -30,7 +30,7 @@ Interactive tools for installing and configuring the [Reticulum Network Stack](h
 ```bash
 # Download the tools
 git clone https://github.com/fr33n0w/ReticulumTools.git
-cd reticulum-tools
+cd ReticulumTools
 
 # Make executable
 chmod +x *.py
