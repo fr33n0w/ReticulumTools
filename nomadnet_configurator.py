@@ -82,7 +82,7 @@ TRANSLATIONS = {
         "fix_issues": "🔧 Would you like to fix these issues? (y/n): ",
         "fixing_issues": "🔧 Fixing issues...",
         "issues_fixed": "✅ All issues fixed!",
-        "issue_invalid_colormode": "Invalid colormode value (must be 0 for dark or 1 for light)",
+        "issue_invalid_colormode": "Invalid colormode value (must be: monochrome, 16, 88, 256, or 24bit)",
         "issue_section_missing": "Missing section: [{section}]",
         "testing_with_nomadnet": "🧪 Testing with nomadnet...",
         "nomadnet_not_found": "⚠️  nomadnet not found - cannot validate config",
@@ -228,8 +228,9 @@ To host pages on your NomadNet node, you need to:
   [3] 🖥️  Modifica impostazioni UI testo (intro, colori, editor)
   [4] 📡 Modifica impostazioni nodo (abilita hosting, intervallo annunci)
   [5] 📄 Informazioni hosting pagine
-  [6] 💾 Salva ed esci
-  [7] ❌ Esci senza salvare
+  [6] 🔧 Controlla e Correggi configurazione
+  [7] 💾 Salva ed esci
+  [8] ❌ Esci senza salvare
 
 """,
         "enter_choice": "Inserisci la tua scelta: ",
@@ -246,6 +247,17 @@ To host pages on your NomadNet node, you need to:
         "new_value": "Nuovo valore (premi Invio per mantenere): ",
         "enabled": "abilitato",
         "disabled": "disabilitato",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    CONTROLLA E CORREGGI CONFIGURAZIONE                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Controllo configurazione...",
+        "config_valid": "✅ La configurazione è valida!",
+        "config_issues": "⚠️  Trovati {count} problema/i:",
+        "fix_issues": "🔧 Vuoi correggere questi problemi? (s/n): ",
+        "fixing_issues": "🔧 Correzione in corso...",
+        "issues_fixed": "✅ Tutti i problemi sono stati corretti!",
         "client_settings": """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                        IMPOSTAZIONI CLIENT                                   ║
@@ -265,10 +277,11 @@ To host pages on your NomadNet node, you need to:
 
   [1] ⏱️  Tempo schermata intro (secondi): {intro_time}
   [2] 🖊️  Editor predefinito: {editor}
-  [3] 🌈 Modalità colore (dark/light): {colormode}
-  [4] 🌙 Usa glifi (simboli): {glyphs}
-  [5] 🔠 Supporto mouse: {mouse}
-  [6] 🔙 Torna al menu principale
+  [3] 🎨 Tema (dark/light): {theme}
+  [4] 🌈 Profondità colore: {colormode}
+  [5] 🔤 Glifi: {glyphs}
+  [6] 🖱️  Supporto mouse: {mouse}
+  [7] 🔙 Torna al menu principale
 
 """,
         "node_settings": """
@@ -386,8 +399,9 @@ Per ospitare pagine sul tuo nodo NomadNet, devi:
   [3] 🖥️  Editar configuración UI texto (intro, colores, editor)
   [4] 📡 Editar configuración nodo (habilitar hosting, intervalo anuncios)
   [5] 📄 Información de hosting de páginas
-  [6] 💾 Guardar y salir
-  [7] ❌ Salir sin guardar
+  [6] 🔧 Verificar y Corregir configuración
+  [7] 💾 Guardar y salir
+  [8] ❌ Salir sin guardar
 
 """,
         "enter_choice": "Ingresa tu elección: ",
@@ -404,6 +418,17 @@ Per ospitare pagine sul tuo nodo NomadNet, devi:
         "new_value": "Nuevo valor (presiona Enter para mantener): ",
         "enabled": "habilitado",
         "disabled": "deshabilitado",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   VERIFICAR Y CORREGIR CONFIGURACIÓN                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Verificando configuración...",
+        "config_valid": "✅ ¡La configuración es válida!",
+        "config_issues": "⚠️  Se encontraron {count} problema(s):",
+        "fix_issues": "🔧 ¿Deseas corregir estos problemas? (s/n): ",
+        "fixing_issues": "🔧 Corrigiendo problemas...",
+        "issues_fixed": "✅ ¡Todos los problemas han sido corregidos!",
         "client_settings": """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                        CONFIGURACIÓN CLIENTE                                 ║
@@ -423,10 +448,11 @@ Per ospitare pagine sul tuo nodo NomadNet, devi:
 
   [1] ⏱️  Tiempo pantalla intro (segundos): {intro_time}
   [2] 🖊️  Editor predeterminado: {editor}
-  [3] 🌈 Modo de color (dark/light): {colormode}
-  [4] 🌙 Usar glifos (símbolos): {glyphs}
-  [5] 🔠 Soporte de ratón: {mouse}
-  [6] 🔙 Volver al menú principal
+  [3] 🎨 Tema (dark/light): {theme}
+  [4] 🌈 Profundidad de color: {colormode}
+  [5] 🔤 Glifos: {glyphs}
+  [6] 🖱️  Soporte de ratón: {mouse}
+  [7] 🔙 Volver al menú principal
 
 """,
         "node_settings": """
@@ -544,8 +570,9 @@ Para hospedar páginas en tu nodo NomadNet, necesitas:
   [3] 🖥️  Text-UI-Einstellungen bearbeiten (Intro, Farben, Editor)
   [4] 📡 Knoten-Einstellungen bearbeiten (Hosting aktivieren, Ankündigungsintervall)
   [5] 📄 Informationen zum Seiten-Hosting
-  [6] 💾 Speichern und beenden
-  [7] ❌ Beenden ohne zu speichern
+  [6] 🔧 Konfiguration prüfen und reparieren
+  [7] 💾 Speichern und beenden
+  [8] ❌ Beenden ohne zu speichern
 
 """,
         "enter_choice": "Gib deine Wahl ein: ",
@@ -562,6 +589,17 @@ Para hospedar páginas en tu nodo NomadNet, necesitas:
         "new_value": "Neuer Wert (Enter drücken zum Beibehalten): ",
         "enabled": "aktiviert",
         "disabled": "deaktiviert",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   KONFIGURATION PRÜFEN UND REPARIEREN                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Prüfe Konfiguration...",
+        "config_valid": "✅ Die Konfiguration ist gültig!",
+        "config_issues": "⚠️  {count} Problem(e) gefunden:",
+        "fix_issues": "🔧 Möchtest du diese Probleme beheben? (j/n): ",
+        "fixing_issues": "🔧 Behebe Probleme...",
+        "issues_fixed": "✅ Alle Probleme wurden behoben!",
         "client_settings": """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                        CLIENT-EINSTELLUNGEN                                  ║
@@ -581,10 +619,11 @@ Para hospedar páginas en tu nodo NomadNet, necesitas:
 
   [1] ⏱️  Intro-Bildschirmzeit (Sekunden): {intro_time}
   [2] 🖊️  Standard-Editor: {editor}
-  [3] 🌈 Farbmodus (dark/light): {colormode}
-  [4] 🌙 Glyphen verwenden (Symbole): {glyphs}
-  [5] 🔠 Maus-Unterstützung: {mouse}
-  [6] 🔙 Zurück zum Hauptmenü
+  [3] 🎨 Theme (dark/light): {theme}
+  [4] 🌈 Farbtiefe: {colormode}
+  [5] 🔤 Glyphen: {glyphs}
+  [6] 🖱️  Maus-Unterstützung: {mouse}
+  [7] 🔙 Zurück zum Hauptmenü
 
 """,
         "node_settings": """
@@ -1360,52 +1399,73 @@ class NomadNetConfigurator:
                 if section == "client":
                     fixes.append(("add_section", section, "enable_client = yes\nuser_interface = text"))
                 elif section == "textui":
-                    fixes.append(("add_section", section, "intro_time = 1\ntheme = dark\ncolormode = 256\nglyphs = unicode"))
+                    fixes.append(("add_section", section, "intro_time = 1\ntheme = dark\ncolormode = 256\nglyphs = unicode\nmouse_enabled = True"))
                 elif section == "node":
                     fixes.append(("add_section", section, "enable_node = no\nannounce_at_start = yes"))
         
         # Check 2: Colormode must be valid (monochrome, 16, 88, 256, 24bit)
-        # NOT integers like 0 or 1!
+        # IMPORTANT: "dark", "light", "mono", "0", "1" are WRONG values (from old broken config)
         valid_colormodes = ["monochrome", "16", "88", "256", "24bit"]
         colormode = self.get_setting("textui", "colormode", None)
         if colormode is not None:
-            if colormode not in valid_colormodes:
-                issues.append(f"Invalid colormode '{colormode}' - must be one of: {', '.join(valid_colormodes)}")
+            colormode_lower = colormode.lower().strip()
+            if colormode_lower not in [v.lower() for v in valid_colormodes]:
+                # Check if it's a theme value mistakenly put in colormode
+                if colormode_lower in ["dark", "light", "mono", "0", "1"]:
+                    issues.append(f"❌ colormode '{colormode}' is WRONG! This is a theme value, not a color depth.")
+                    issues.append(f"   colormode must be: monochrome, 16, 88, 256, or 24bit")
+                else:
+                    issues.append(f"Invalid colormode '{colormode}' - must be one of: {', '.join(valid_colormodes)}")
                 fixes.append(("fix_setting", "textui", "colormode", "256"))
         
-        # Check 3: Theme must be dark or light
+        # Check 3: Theme must be dark or light (if it exists)
         theme = self.get_setting("textui", "theme", None)
         if theme is not None:
-            if theme.lower() not in ["dark", "light"]:
+            if theme.lower().strip() not in ["dark", "light"]:
                 issues.append(f"Invalid theme '{theme}' - must be 'dark' or 'light'")
                 fixes.append(("fix_setting", "textui", "theme", "dark"))
+        else:
+            # Theme is missing - add it
+            issues.append(f"Missing 'theme' setting in [textui] - needed for dark/light mode")
+            fixes.append(("fix_setting", "textui", "theme", "dark"))
         
         # Check 4: Glyphs must be plain, unicode, or nerdfont
         valid_glyphs = ["plain", "unicode", "nerdfont"]
         glyphs = self.get_setting("textui", "glyphs", None)
         if glyphs is not None:
-            if glyphs.lower() not in valid_glyphs:
-                issues.append(f"Invalid glyphs '{glyphs}' - must be one of: {', '.join(valid_glyphs)}")
+            glyphs_lower = glyphs.lower().strip()
+            if glyphs_lower not in valid_glyphs:
+                # Check for old yes/no format
+                if glyphs_lower in ["yes", "no", "true", "false"]:
+                    issues.append(f"❌ glyphs '{glyphs}' is WRONG! Must be: plain, unicode, or nerdfont")
+                else:
+                    issues.append(f"Invalid glyphs '{glyphs}' - must be one of: {', '.join(valid_glyphs)}")
                 fixes.append(("fix_setting", "textui", "glyphs", "unicode"))
         
         # Check 5: mouse_enabled should be True/False (NomadNet uses Python booleans)
         mouse = self.get_setting("textui", "mouse_enabled", None)
         if mouse is not None:
-            if mouse.lower() not in ["true", "false"]:
-                issues.append(f"Invalid mouse_enabled '{mouse}' - must be 'True' or 'False'")
-                fixes.append(("fix_setting", "textui", "mouse_enabled", "True"))
+            mouse_lower = mouse.lower().strip()
+            if mouse_lower not in ["true", "false"]:
+                # Check for yes/no format
+                if mouse_lower in ["yes", "no"]:
+                    issues.append(f"mouse_enabled '{mouse}' should be 'True' or 'False' (not yes/no)")
+                    new_val = "True" if mouse_lower == "yes" else "False"
+                    fixes.append(("fix_setting", "textui", "mouse_enabled", new_val))
+                else:
+                    issues.append(f"Invalid mouse_enabled '{mouse}' - must be 'True' or 'False'")
+                    fixes.append(("fix_setting", "textui", "mouse_enabled", "True"))
         
-        # Check 6: enable_client, enable_node should be yes/no
+        # Check 6: enable_client, enable_node should be yes/no (or Yes/No)
         yes_no_settings = [
             ("client", "enable_client"),
             ("node", "enable_node"),
-            ("node", "announce_at_start"),
         ]
         
         for section, key in yes_no_settings:
             value = self.get_setting(section, key, None)
             if value is not None:
-                if value.lower() not in ["yes", "no"]:
+                if value.lower().strip() not in ["yes", "no"]:
                     issues.append(f"Invalid value for '{key}': should be 'yes' or 'no', got '{value}'")
                     fixes.append(("fix_setting", section, key, "yes" if value.lower() in ["true", "1"] else "no"))
         
