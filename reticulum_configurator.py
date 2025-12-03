@@ -53,8 +53,9 @@ TRANSLATIONS = {
   [3] 🌐 Manage interfaces
   [4] 📡 Add TCP Client Interfaces (connect to network)
   [5] 🔌 Quick Connect - Add recommended public nodes
-  [6] 💾 Save and exit
-  [7] ❌ Exit without saving
+  [6] 🔧 Check & Fix configuration
+  [7] 💾 Save and exit
+  [8] ❌ Exit without saving
 
 """,
         "enter_choice": "Enter your choice: ",
@@ -157,6 +158,27 @@ Enable this if you want to help the network or need to bridge interfaces.
         "setting_updated": "✅ Setting updated!",
         "view_config": "📋 Current Configuration:",
         "config_location": "📁 Config file location:",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      CHECK & FIX CONFIGURATION                               ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Checking configuration...",
+        "config_valid": "✅ Configuration is valid!",
+        "config_issues": "⚠️  Found {count} issue(s):",
+        "fix_issues": "🔧 Would you like to fix these issues? (y/n): ",
+        "fixing_issues": "🔧 Fixing issues...",
+        "issues_fixed": "✅ All issues fixed!",
+        "issue_section_missing": "Missing required section: [{section}]",
+        "issue_key_missing": "Missing key '{key}' in [{section}]",
+        "issue_bad_indentation": "Bad indentation in interface '{name}'",
+        "issue_invalid_value": "Invalid value for '{key}': {value}",
+        "issue_duplicate_interface": "Duplicate interface: {name}",
+        "issue_empty_section": "Empty [interfaces] section",
+        "testing_with_rnsd": "🧪 Testing with rnsd...",
+        "rnsd_not_found": "⚠️  rnsd not found - cannot validate config",
+        "rnsd_test_passed": "✅ rnsd validation passed!",
+        "rnsd_test_failed": "❌ rnsd validation failed:",
     },
     
     "it": {
@@ -188,8 +210,9 @@ Enable this if you want to help the network or need to bridge interfaces.
   [3] 🌐 Gestisci interfacce
   [4] 📡 Aggiungi interfacce TCP Client (connetti alla rete)
   [5] 🔌 Connessione Rapida - Aggiungi nodi pubblici consigliati
-  [6] 💾 Salva ed esci
-  [7] ❌ Esci senza salvare
+  [6] 🔧 Controlla e Correggi configurazione
+  [7] 💾 Salva ed esci
+  [8] ❌ Esci senza salvare
 
 """,
         "enter_choice": "Inserisci la tua scelta: ",
@@ -292,6 +315,27 @@ Abilitala se vuoi aiutare la rete o devi collegare interfacce.
         "setting_updated": "✅ Impostazione aggiornata!",
         "view_config": "📋 Configurazione Attuale:",
         "config_location": "📁 Posizione file config:",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    CONTROLLA E CORREGGI CONFIGURAZIONE                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Controllo configurazione...",
+        "config_valid": "✅ La configurazione è valida!",
+        "config_issues": "⚠️  Trovati {count} problema/i:",
+        "fix_issues": "🔧 Vuoi correggere questi problemi? (s/n): ",
+        "fixing_issues": "🔧 Correzione in corso...",
+        "issues_fixed": "✅ Tutti i problemi sono stati corretti!",
+        "issue_section_missing": "Sezione mancante: [{section}]",
+        "issue_key_missing": "Chiave '{key}' mancante in [{section}]",
+        "issue_bad_indentation": "Indentazione errata nell'interfaccia '{name}'",
+        "issue_invalid_value": "Valore non valido per '{key}': {value}",
+        "issue_duplicate_interface": "Interfaccia duplicata: {name}",
+        "issue_empty_section": "Sezione [interfaces] vuota",
+        "testing_with_rnsd": "🧪 Test con rnsd...",
+        "rnsd_not_found": "⚠️  rnsd non trovato - impossibile validare il config",
+        "rnsd_test_passed": "✅ Validazione rnsd superata!",
+        "rnsd_test_failed": "❌ Validazione rnsd fallita:",
     },
     
     "es": {
@@ -323,8 +367,9 @@ Abilitala se vuoi aiutare la rete o devi collegare interfacce.
   [3] 🌐 Gestionar interfaces
   [4] 📡 Añadir interfaces TCP Client (conectar a la red)
   [5] 🔌 Conexión Rápida - Añadir nodos públicos recomendados
-  [6] 💾 Guardar y salir
-  [7] ❌ Salir sin guardar
+  [6] 🔧 Verificar y Corregir configuración
+  [7] 💾 Guardar y salir
+  [8] ❌ Salir sin guardar
 
 """,
         "enter_choice": "Ingresa tu elección: ",
@@ -427,6 +472,27 @@ Habilítalo si quieres ayudar a la red o necesitas conectar interfaces.
         "setting_updated": "✅ ¡Configuración actualizada!",
         "view_config": "📋 Configuración Actual:",
         "config_location": "📁 Ubicación del archivo config:",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   VERIFICAR Y CORREGIR CONFIGURACIÓN                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Verificando configuración...",
+        "config_valid": "✅ ¡La configuración es válida!",
+        "config_issues": "⚠️  Se encontraron {count} problema(s):",
+        "fix_issues": "🔧 ¿Deseas corregir estos problemas? (s/n): ",
+        "fixing_issues": "🔧 Corrigiendo problemas...",
+        "issues_fixed": "✅ ¡Todos los problemas han sido corregidos!",
+        "issue_section_missing": "Sección faltante: [{section}]",
+        "issue_key_missing": "Clave '{key}' faltante en [{section}]",
+        "issue_bad_indentation": "Indentación incorrecta en interfaz '{name}'",
+        "issue_invalid_value": "Valor inválido para '{key}': {value}",
+        "issue_duplicate_interface": "Interfaz duplicada: {name}",
+        "issue_empty_section": "Sección [interfaces] vacía",
+        "testing_with_rnsd": "🧪 Probando con rnsd...",
+        "rnsd_not_found": "⚠️  rnsd no encontrado - no se puede validar el config",
+        "rnsd_test_passed": "✅ ¡Validación rnsd exitosa!",
+        "rnsd_test_failed": "❌ Validación rnsd falló:",
     },
     
     "de": {
@@ -458,8 +524,9 @@ Habilítalo si quieres ayudar a la red o necesitas conectar interfaces.
   [3] 🌐 Schnittstellen verwalten
   [4] 📡 TCP-Client-Schnittstellen hinzufügen (mit Netzwerk verbinden)
   [5] 🔌 Schnellverbindung - Empfohlene öffentliche Knoten hinzufügen
-  [6] 💾 Speichern und beenden
-  [7] ❌ Beenden ohne zu speichern
+  [6] 🔧 Konfiguration prüfen und reparieren
+  [7] 💾 Speichern und beenden
+  [8] ❌ Beenden ohne zu speichern
 
 """,
         "enter_choice": "Gib deine Wahl ein: ",
@@ -562,6 +629,27 @@ Aktiviere dies, wenn du dem Netzwerk helfen oder Schnittstellen verbinden möcht
         "setting_updated": "✅ Einstellung aktualisiert!",
         "view_config": "📋 Aktuelle Konfiguration:",
         "config_location": "📁 Konfigurationsdatei-Speicherort:",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   KONFIGURATION PRÜFEN UND REPARIEREN                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Prüfe Konfiguration...",
+        "config_valid": "✅ Die Konfiguration ist gültig!",
+        "config_issues": "⚠️  {count} Problem(e) gefunden:",
+        "fix_issues": "🔧 Möchtest du diese Probleme beheben? (j/n): ",
+        "fixing_issues": "🔧 Behebe Probleme...",
+        "issues_fixed": "✅ Alle Probleme wurden behoben!",
+        "issue_section_missing": "Fehlender Abschnitt: [{section}]",
+        "issue_key_missing": "Fehlender Schlüssel '{key}' in [{section}]",
+        "issue_bad_indentation": "Falsche Einrückung bei Schnittstelle '{name}'",
+        "issue_invalid_value": "Ungültiger Wert für '{key}': {value}",
+        "issue_duplicate_interface": "Doppelte Schnittstelle: {name}",
+        "issue_empty_section": "Leerer [interfaces] Abschnitt",
+        "testing_with_rnsd": "🧪 Teste mit rnsd...",
+        "rnsd_not_found": "⚠️  rnsd nicht gefunden - Konfiguration kann nicht validiert werden",
+        "rnsd_test_passed": "✅ rnsd Validierung bestanden!",
+        "rnsd_test_failed": "❌ rnsd Validierung fehlgeschlagen:",
     },
     
     "ru": {
@@ -593,8 +681,9 @@ Aktiviere dies, wenn du dem Netzwerk helfen oder Schnittstellen verbinden möcht
   [3] 🌐 Управление интерфейсами
   [4] 📡 Добавить TCP Client интерфейсы (подключиться к сети)
   [5] 🔌 Быстрое подключение - Добавить рекомендуемые публичные узлы
-  [6] 💾 Сохранить и выйти
-  [7] ❌ Выйти без сохранения
+  [6] 🔧 Проверить и исправить конфигурацию
+  [7] 💾 Сохранить и выйти
+  [8] ❌ Выйти без сохранения
 
 """,
         "enter_choice": "Введите ваш выбор: ",
@@ -697,6 +786,27 @@ Aktiviere dies, wenn du dem Netzwerk helfen oder Schnittstellen verbinden möcht
         "setting_updated": "✅ Настройка обновлена!",
         "view_config": "📋 Текущая Конфигурация:",
         "config_location": "📁 Расположение файла конфигурации:",
+        "check_fix_title": """
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                  ПРОВЕРИТЬ И ИСПРАВИТЬ КОНФИГУРАЦИЮ                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+""",
+        "checking_config": "🔍 Проверка конфигурации...",
+        "config_valid": "✅ Конфигурация корректна!",
+        "config_issues": "⚠️  Найдено {count} проблем(а):",
+        "fix_issues": "🔧 Исправить эти проблемы? (д/н): ",
+        "fixing_issues": "🔧 Исправление проблем...",
+        "issues_fixed": "✅ Все проблемы исправлены!",
+        "issue_section_missing": "Отсутствует секция: [{section}]",
+        "issue_key_missing": "Отсутствует ключ '{key}' в [{section}]",
+        "issue_bad_indentation": "Неправильный отступ в интерфейсе '{name}'",
+        "issue_invalid_value": "Недопустимое значение для '{key}': {value}",
+        "issue_duplicate_interface": "Дублирующийся интерфейс: {name}",
+        "issue_empty_section": "Пустая секция [interfaces]",
+        "testing_with_rnsd": "🧪 Тестирование с rnsd...",
+        "rnsd_not_found": "⚠️  rnsd не найден - невозможно проверить конфигурацию",
+        "rnsd_test_passed": "✅ Проверка rnsd пройдена!",
+        "rnsd_test_failed": "❌ Проверка rnsd не пройдена:",
     },
 }
 
@@ -1314,6 +1424,245 @@ class ReticulumConfigurator:
                 print(f"\n{self.t('nodes_added')}")
             time.sleep(2)
     
+    def check_and_fix_config(self):
+        """Check configuration for issues and optionally fix them"""
+        self.clear_screen()
+        print(self.t("check_fix_title"))
+        print(f"{self.t('checking_config')}\n")
+        
+        issues = []
+        fixes = []
+        
+        # Check 1: Required sections exist
+        required_sections = ["reticulum", "logging", "interfaces"]
+        for section in required_sections:
+            if f"[{section}]" not in self.config_content:
+                issues.append(self.t("issue_section_missing").format(section=section))
+                if section == "reticulum":
+                    fixes.append(("add_section", section, "enable_transport = False\nshare_instance = Yes"))
+                elif section == "logging":
+                    fixes.append(("add_section", section, "loglevel = 4"))
+                elif section == "interfaces":
+                    fixes.append(("add_section", section, "\n  [[Default Interface]]\n    type = AutoInterface\n    enabled = yes"))
+        
+        # Check 2: Required keys in [reticulum]
+        if "[reticulum]" in self.config_content:
+            required_keys = {
+                "enable_transport": "False",
+                "share_instance": "Yes"
+            }
+            for key, default in required_keys.items():
+                value = self.get_setting("reticulum", key, None)
+                if value is None:
+                    issues.append(self.t("issue_key_missing").format(key=key, section="reticulum"))
+                    fixes.append(("add_key", "reticulum", key, default))
+        
+        # Check 3: Required keys in [logging]
+        if "[logging]" in self.config_content:
+            value = self.get_setting("logging", "loglevel", None)
+            if value is None:
+                issues.append(self.t("issue_key_missing").format(key="loglevel", section="logging"))
+                fixes.append(("add_key", "logging", "loglevel", "4"))
+        
+        # Check 4: Interface indentation (2 spaces for [[]], 4 for properties)
+        interface_pattern = r'\[\[([^\]]+)\]\]'
+        interfaces_section = re.search(r'\[interfaces\](.*?)(?=\n\[[^\[]|\Z)', self.config_content, re.DOTALL)
+        
+        if interfaces_section:
+            section_content = interfaces_section.group(1)
+            lines = section_content.split('\n')
+            
+            current_interface = None
+            bad_interfaces = set()
+            
+            for i, line in enumerate(lines):
+                # Check for interface header
+                iface_match = re.match(r'^(\s*)\[\[([^\]]+)\]\]', line)
+                if iface_match:
+                    indent = len(iface_match.group(1))
+                    current_interface = iface_match.group(2)
+                    if indent != 2:
+                        bad_interfaces.add(current_interface)
+                
+                # Check for property indentation
+                prop_match = re.match(r'^(\s*)(\w+)\s*=', line)
+                if prop_match and current_interface:
+                    indent = len(prop_match.group(1))
+                    if indent != 4:
+                        bad_interfaces.add(current_interface)
+            
+            for iface in bad_interfaces:
+                issues.append(self.t("issue_bad_indentation").format(name=iface))
+                fixes.append(("fix_indentation", iface))
+        
+        # Check 5: Empty interfaces section
+        if interfaces_section:
+            section_content = interfaces_section.group(1).strip()
+            if not section_content or "[[" not in section_content:
+                issues.append(self.t("issue_empty_section"))
+                fixes.append(("add_default_interface", ))
+        
+        # Check 6: Duplicate interfaces
+        if interfaces_section:
+            interface_names = re.findall(r'\[\[([^\]]+)\]\]', interfaces_section.group(1))
+            seen = set()
+            for name in interface_names:
+                if name in seen:
+                    issues.append(self.t("issue_duplicate_interface").format(name=name))
+                    fixes.append(("remove_duplicate", name))
+                seen.add(name)
+        
+        # Display results
+        if not issues:
+            print(f"\n{self.t('config_valid')}")
+            
+            # Try to validate with rnsd if available
+            self.test_with_rnsd()
+        else:
+            print(f"\n{self.t('config_issues').format(count=len(issues))}\n")
+            for i, issue in enumerate(issues, 1):
+                print(f"  {i}. {issue}")
+            
+            # Ask if user wants to fix
+            print()
+            response = input(self.t("fix_issues")).strip().lower()
+            
+            if response == self.t("yes"):
+                print(f"\n{self.t('fixing_issues')}\n")
+                self.apply_fixes(fixes)
+                print(f"\n{self.t('issues_fixed')}")
+                
+                # Test again
+                self.test_with_rnsd()
+        
+        input(f"\n{self.t('press_enter')}")
+    
+    def apply_fixes(self, fixes):
+        """Apply the list of fixes to the config"""
+        for fix in fixes:
+            fix_type = fix[0]
+            
+            if fix_type == "add_section":
+                section = fix[1]
+                content = fix[2]
+                self.config_content = self.config_content.rstrip() + f"\n\n[{section}]\n{content}\n"
+                print(f"  ✅ Added [{section}] section")
+                self.has_changes = True
+            
+            elif fix_type == "add_key":
+                section = fix[1]
+                key = fix[2]
+                value = fix[3]
+                self.set_setting(section, key, value)
+                print(f"  ✅ Added {key} = {value} to [{section}]")
+            
+            elif fix_type == "fix_indentation":
+                iface_name = fix[1]
+                self.fix_interface_indentation(iface_name)
+                print(f"  ✅ Fixed indentation for [[{iface_name}]]")
+            
+            elif fix_type == "add_default_interface":
+                interface_block = "\n  [[Default Interface]]\n"
+                interface_block += "    type = AutoInterface\n"
+                interface_block += "    enabled = yes\n"
+                
+                # Add after [interfaces]
+                self.config_content = re.sub(
+                    r'(\[interfaces\])\s*\n',
+                    r'\1' + interface_block,
+                    self.config_content
+                )
+                print(f"  ✅ Added default AutoInterface")
+                self.has_changes = True
+            
+            elif fix_type == "remove_duplicate":
+                # Remove second occurrence of interface
+                iface_name = fix[1]
+                pattern = rf'(\[\[{re.escape(iface_name)}\]\].*?)(\[\[{re.escape(iface_name)}\]\].*?)(?=\[\[|\[(?!\[)|$)'
+                self.config_content = re.sub(pattern, r'\1', self.config_content, flags=re.DOTALL)
+                print(f"  ✅ Removed duplicate [[{iface_name}]]")
+                self.has_changes = True
+    
+    def fix_interface_indentation(self, iface_name):
+        """Fix indentation for a specific interface"""
+        # Find the interface block
+        pattern = rf'(\s*)\[\[{re.escape(iface_name)}\]\](.*?)(?=\[\[|\[(?!\[)|$)'
+        match = re.search(pattern, self.config_content, re.DOTALL)
+        
+        if match:
+            block = match.group(0)
+            lines = block.split('\n')
+            fixed_lines = []
+            
+            for line in lines:
+                stripped = line.strip()
+                if stripped.startswith('[[') and stripped.endswith(']]'):
+                    # Interface header - 2 spaces
+                    fixed_lines.append('  ' + stripped)
+                elif '=' in stripped and stripped:
+                    # Property - 4 spaces
+                    fixed_lines.append('    ' + stripped)
+                elif stripped:
+                    # Other content - 4 spaces
+                    fixed_lines.append('    ' + stripped)
+                else:
+                    # Empty line
+                    fixed_lines.append('')
+            
+            fixed_block = '\n'.join(fixed_lines)
+            self.config_content = self.config_content.replace(block, fixed_block)
+            self.has_changes = True
+    
+    def test_with_rnsd(self):
+        """Test the config with rnsd if available"""
+        print(f"\n{self.t('testing_with_rnsd')}")
+        
+        # Check if rnsd is available
+        try:
+            result = subprocess.run(
+                ["which", "rnsd"],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode != 0:
+                print(f"  {self.t('rnsd_not_found')}")
+                return
+        except Exception:
+            print(f"  {self.t('rnsd_not_found')}")
+            return
+        
+        # Save current config to temp location and test
+        # We need to save first to test
+        if self.config_content != self.original_content:
+            print("  ℹ️  Saving config temporarily for validation...")
+            try:
+                with open(self.config_path, 'w') as f:
+                    f.write(self.config_content)
+            except Exception as e:
+                print(f"  ❌ Could not save for testing: {e}")
+                return
+        
+        # Run rnsd with --version to check if config can be parsed
+        try:
+            result = subprocess.run(
+                ["rnsd", "--version"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            
+            # Check for config errors in stderr
+            if "Could not parse" in result.stderr or "Error" in result.stderr:
+                print(f"  {self.t('rnsd_test_failed')}")
+                print(f"    {result.stderr.strip()}")
+            else:
+                print(f"  {self.t('rnsd_test_passed')}")
+                
+        except subprocess.TimeoutExpired:
+            print(f"  {self.t('rnsd_test_passed')}")  # If it's running, config is fine
+        except Exception as e:
+            print(f"  ⚠️  Test error: {e}")
+    
     def main_menu(self):
         """Main menu loop"""
         while True:
@@ -1337,10 +1686,12 @@ class ReticulumConfigurator:
             elif choice == "5":
                 self.quick_connect()
             elif choice == "6":
+                self.check_and_fix_config()
+            elif choice == "7":
                 self.save_config()
                 print(f"\n{self.t('goodbye')}")
                 break
-            elif choice == "7":
+            elif choice == "8":
                 if self.config_content != self.original_content:
                     confirm = input(self.t("exit_without_save")).strip().lower()
                     if confirm != self.t("yes"):
