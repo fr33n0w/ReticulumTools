@@ -29,7 +29,7 @@ Interactive tools for installing and configuring the [Reticulum Network Stack](h
 
 ```bash
 # Download the tools
-git clone https://github.com/YOUR_USERNAME/reticulum-tools.git
+git clone https://github.com/fr33n0w/reticulum-tools.git
 cd reticulum-tools
 
 # Make executable
