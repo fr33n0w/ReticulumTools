@@ -1433,40 +1433,33 @@ class ReticulumConfigurator:
         issues = []
         fixes = []
         
+        # FIRST: Test with rnsd if available (most reliable check)
+        rnsd_ok, rnsd_error = self.test_with_rnsd_silent()
+        
+        if rnsd_ok:
+            print(f"  {self.t('rnsd_test_passed')}")
+            print(f"\n{self.t('config_valid')}")
+            input(f"\n{self.t('press_enter')}")
+            return
+        elif rnsd_error:
+            print(f"  {self.t('rnsd_test_failed')}")
+            print(f"    {rnsd_error}\n")
+        
         # Check 1: Required sections exist
         required_sections = ["reticulum", "logging", "interfaces"]
         for section in required_sections:
-            if f"[{section}]" not in self.config_content:
+            # Use regex to avoid false matches like [[interfaces]]
+            if not re.search(rf'^\[{section}\]\s*$', self.config_content, re.MULTILINE):
                 issues.append(self.t("issue_section_missing").format(section=section))
                 if section == "reticulum":
-                    fixes.append(("add_section", section, "enable_transport = False\nshare_instance = Yes"))
+                    fixes.append(("add_section", section, "enable_transport = No\nshare_instance = Yes"))
                 elif section == "logging":
                     fixes.append(("add_section", section, "loglevel = 4"))
                 elif section == "interfaces":
                     fixes.append(("add_section", section, "\n  [[Default Interface]]\n    type = AutoInterface\n    enabled = yes"))
         
-        # Check 2: Required keys in [reticulum]
-        if "[reticulum]" in self.config_content:
-            required_keys = {
-                "enable_transport": "False",
-                "share_instance": "Yes"
-            }
-            for key, default in required_keys.items():
-                value = self.get_setting("reticulum", key, None)
-                if value is None:
-                    issues.append(self.t("issue_key_missing").format(key=key, section="reticulum"))
-                    fixes.append(("add_key", "reticulum", key, default))
-        
-        # Check 3: Required keys in [logging]
-        if "[logging]" in self.config_content:
-            value = self.get_setting("logging", "loglevel", None)
-            if value is None:
-                issues.append(self.t("issue_key_missing").format(key="loglevel", section="logging"))
-                fixes.append(("add_key", "logging", "loglevel", "4"))
-        
-        # Check 4: Interface indentation (2 spaces for [[]], 4 for properties)
-        interface_pattern = r'\[\[([^\]]+)\]\]'
-        interfaces_section = re.search(r'\[interfaces\](.*?)(?=\n\[[^\[]|\Z)', self.config_content, re.DOTALL)
+        # Check 2: Interface indentation (2 spaces for [[]], 4 for properties)
+        interfaces_section = re.search(r'\[interfaces\]\s*\n(.*?)(?=\n\[[a-z]|\Z)', self.config_content, re.DOTALL | re.IGNORECASE)
         
         if interfaces_section:
             section_content = interfaces_section.group(1)
@@ -1476,6 +1469,11 @@ class ReticulumConfigurator:
             bad_interfaces = set()
             
             for i, line in enumerate(lines):
+                # Skip empty lines and comments
+                stripped = line.strip()
+                if not stripped or stripped.startswith('#'):
+                    continue
+                
                 # Check for interface header
                 iface_match = re.match(r'^(\s*)\[\[([^\]]+)\]\]', line)
                 if iface_match:
@@ -1483,8 +1481,9 @@ class ReticulumConfigurator:
                     current_interface = iface_match.group(2)
                     if indent != 2:
                         bad_interfaces.add(current_interface)
+                    continue
                 
-                # Check for property indentation
+                # Check for property indentation (only if we're inside an interface)
                 prop_match = re.match(r'^(\s*)(\w+)\s*=', line)
                 if prop_match and current_interface:
                     indent = len(prop_match.group(1))
@@ -1495,14 +1494,16 @@ class ReticulumConfigurator:
                 issues.append(self.t("issue_bad_indentation").format(name=iface))
                 fixes.append(("fix_indentation", iface))
         
-        # Check 5: Empty interfaces section
+        # Check 3: Empty interfaces section
         if interfaces_section:
             section_content = interfaces_section.group(1).strip()
-            if not section_content or "[[" not in section_content:
+            # Remove comments
+            non_comment_lines = [l for l in section_content.split('\n') if l.strip() and not l.strip().startswith('#')]
+            if not non_comment_lines or "[[" not in section_content:
                 issues.append(self.t("issue_empty_section"))
                 fixes.append(("add_default_interface", ))
         
-        # Check 6: Duplicate interfaces
+        # Check 4: Duplicate interfaces
         if interfaces_section:
             interface_names = re.findall(r'\[\[([^\]]+)\]\]', interfaces_section.group(1))
             seen = set()
@@ -1514,10 +1515,23 @@ class ReticulumConfigurator:
         
         # Display results
         if not issues:
-            print(f"\n{self.t('config_valid')}")
-            
-            # Try to validate with rnsd if available
-            self.test_with_rnsd()
+            if rnsd_error:
+                # rnsd failed but we couldn't detect the issue
+                print(f"\n  ⚠️  Could not automatically detect the issue.")
+                print(f"  Please check the config file manually for syntax errors.")
+                print(f"\n  Common issues:")
+                print(f"    • Incorrect indentation (use 2 spaces for [[Interface]], 4 for properties)")
+                print(f"    • Missing or extra brackets")
+                print(f"    • Invalid parameter names or values")
+                print(f"    • Tabs instead of spaces")
+                
+                # Offer to rebuild config
+                print(f"\n  Would you like to rebuild the config from scratch?")
+                response = input(f"  This will reset to defaults but preserve interfaces (y/n): ").strip().lower()
+                if response == self.t("yes"):
+                    self.rebuild_config()
+            else:
+                print(f"\n{self.t('config_valid')}")
         else:
             print(f"\n{self.t('config_issues').format(count=len(issues))}\n")
             for i, issue in enumerate(issues, 1):
@@ -1533,9 +1547,155 @@ class ReticulumConfigurator:
                 print(f"\n{self.t('issues_fixed')}")
                 
                 # Test again
-                self.test_with_rnsd()
+                rnsd_ok, rnsd_error = self.test_with_rnsd_silent()
+                if rnsd_ok:
+                    print(f"\n  {self.t('rnsd_test_passed')}")
+                elif rnsd_error:
+                    print(f"\n  {self.t('rnsd_test_failed')}")
+                    print(f"    {rnsd_error}")
         
         input(f"\n{self.t('press_enter')}")
+    
+    def rebuild_config(self):
+        """Rebuild config from scratch, preserving interface definitions"""
+        print(f"\n  🔧 Rebuilding configuration...")
+        
+        # Extract existing interfaces
+        interfaces_section = re.search(r'\[interfaces\]\s*\n(.*?)(?=\n\[[a-z]|\Z)', 
+                                       self.config_content, re.DOTALL | re.IGNORECASE)
+        
+        interfaces_content = ""
+        if interfaces_section:
+            # Parse and rebuild interfaces with correct indentation
+            section = interfaces_section.group(1)
+            current_iface = None
+            current_props = []
+            interfaces = []
+            
+            for line in section.split('\n'):
+                stripped = line.strip()
+                
+                # Skip empty lines and comments
+                if not stripped or stripped.startswith('#'):
+                    continue
+                
+                # Interface header
+                iface_match = re.match(r'\[\[([^\]]+)\]\]', stripped)
+                if iface_match:
+                    # Save previous interface
+                    if current_iface:
+                        interfaces.append((current_iface, current_props))
+                    current_iface = iface_match.group(1)
+                    current_props = []
+                    continue
+                
+                # Property
+                prop_match = re.match(r'(\w+)\s*=\s*(.+)', stripped)
+                if prop_match and current_iface:
+                    current_props.append((prop_match.group(1), prop_match.group(2)))
+            
+            # Don't forget last interface
+            if current_iface:
+                interfaces.append((current_iface, current_props))
+            
+            # Rebuild with correct indentation
+            for iface_name, props in interfaces:
+                interfaces_content += f"\n  [[{iface_name}]]\n"
+                for key, value in props:
+                    interfaces_content += f"    {key} = {value}\n"
+        
+        # If no interfaces found, add default
+        if not interfaces_content.strip():
+            interfaces_content = """
+  [[Default Interface]]
+    type = AutoInterface
+    enabled = yes
+"""
+        
+        # Build new config
+        self.config_content = f"""[reticulum]
+enable_transport = No
+share_instance = Yes
+
+[logging]
+loglevel = 4
+
+[interfaces]
+{interfaces_content}"""
+        
+        self.has_changes = True
+        print(f"  ✅ Configuration rebuilt successfully!")
+        print(f"  Please save and test with rnsd.")
+    
+    def test_with_rnsd_silent(self):
+        """Test the config with rnsd silently, return (success, error_message)"""
+        # Check if rnsd is available
+        try:
+            result = subprocess.run(
+                ["which", "rnsd"],
+                capture_output=True,
+                text=True
+            )
+            if result.returncode != 0:
+                return None, None  # rnsd not available
+        except Exception:
+            return None, None
+        
+        # Save current config temporarily if there are unsaved changes
+        config_saved = False
+        original_on_disk = None
+        
+        if self.config_content != self.original_content:
+            try:
+                # Read current on-disk content
+                if self.config_path.exists():
+                    with open(self.config_path, 'r') as f:
+                        original_on_disk = f.read()
+                
+                # Save current content
+                with open(self.config_path, 'w') as f:
+                    f.write(self.config_content)
+                config_saved = True
+            except Exception as e:
+                return None, f"Could not save for testing: {e}"
+        
+        # Test by running rnsd briefly
+        try:
+            result = subprocess.run(
+                ["rnsd", "--config", str(self.config_path.parent)],
+                capture_output=True,
+                text=True,
+                timeout=3
+            )
+            
+            # Check for config errors in stderr
+            combined = result.stdout + result.stderr
+            if "Could not parse" in combined or "Error" in combined:
+                error_lines = [l for l in combined.split('\n') if 'Error' in l or 'Could not parse' in l]
+                error_msg = error_lines[0] if error_lines else "Unknown parsing error"
+                
+                # Restore original if we modified it
+                if config_saved and original_on_disk is not None:
+                    with open(self.config_path, 'w') as f:
+                        f.write(original_on_disk)
+                
+                return False, error_msg
+            
+            return True, None
+                
+        except subprocess.TimeoutExpired:
+            # If it runs for 3 seconds without error, config is probably fine
+            return True, None
+        except Exception as e:
+            return None, f"Test error: {e}"
+        finally:
+            # Restore original if we modified it
+            if config_saved and original_on_disk is not None:
+                try:
+                    with open(self.config_path, 'w') as f:
+                        f.write(original_on_disk)
+                except:
+                    pass
     
     def apply_fixes(self, fixes):
         """Apply the list of fixes to the config"""
@@ -1612,56 +1772,6 @@ class ReticulumConfigurator:
             fixed_block = '\n'.join(fixed_lines)
             self.config_content = self.config_content.replace(block, fixed_block)
             self.has_changes = True
-    
-    def test_with_rnsd(self):
-        """Test the config with rnsd if available"""
-        print(f"\n{self.t('testing_with_rnsd')}")
-        
-        # Check if rnsd is available
-        try:
-            result = subprocess.run(
-                ["which", "rnsd"],
-                capture_output=True,
-                text=True
-            )
-            if result.returncode != 0:
-                print(f"  {self.t('rnsd_not_found')}")
-                return
-        except Exception:
-            print(f"  {self.t('rnsd_not_found')}")
-            return
-        
-        # Save current config to temp location and test
-        # We need to save first to test
-        if self.config_content != self.original_content:
-            print("  ℹ️  Saving config temporarily for validation...")
-            try:
-                with open(self.config_path, 'w') as f:
-                    f.write(self.config_content)
-            except Exception as e:
-                print(f"  ❌ Could not save for testing: {e}")
-                return
-        
-        # Run rnsd with --version to check if config can be parsed
-        try:
-            result = subprocess.run(
-                ["rnsd", "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
-            
-            # Check for config errors in stderr
-            if "Could not parse" in result.stderr or "Error" in result.stderr:
-                print(f"  {self.t('rnsd_test_failed')}")
-                print(f"    {result.stderr.strip()}")
-            else:
-                print(f"  {self.t('rnsd_test_passed')}")
-                
-        except subprocess.TimeoutExpired:
-            print(f"  {self.t('rnsd_test_passed')}")  # If it's running, config is fine
-        except Exception as e:
-            print(f"  ⚠️  Test error: {e}")
     
     def main_menu(self):
         """Main menu loop"""
