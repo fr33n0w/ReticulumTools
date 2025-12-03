@@ -6,8 +6,11 @@ Reticulum Dedicated Python Scripts &amp; Tools to help installing and configure 
 Interactive tools for installing and configuring the [Reticulum Network Stack](https://reticulum.network/) ecosystem. Designed for beginners with multi-language support.
 
 
-⚠️⚠️ NOTE: THIS IS AN EXPERIMENTAL AND WORK IN PROGRESS PROJECT, CONFIGUATOR CAN CORRUPT YOUR CONFIG FiLE, USE AT YOUR OWN RISK! ⚠️⚠️
-      SAFE TO USE: at the moment only reticulum_installer.py
+⚠️⚠️ NOTE: THIS IS AN EXPERIMENTAL AND WORK IN PROGRESS PROJECT, 
+
+⚠️⚠️ CONFIGUATOR CAN CORRUPT OR BREAK YOUR CONFIG FiLE, USE AT YOUR OWN RISK! 
+
+⚠️⚠️ SAFE TO USE: at the moment only reticulum_installer.py
 
 ![Python 3.7+](https://img.shields.io/badge/Python-3.7+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
