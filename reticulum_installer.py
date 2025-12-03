@@ -865,18 +865,111 @@ class ReticulumInstaller:
         input(f"\n  {self.t('press_enter')}")
     
     def _check_externally_managed(self):
-        """Check if we're in an externally managed environment"""
-        # Try a test install to see if we need special flags
-        success, _, stderr = self.run_command(
-            f"{self.pip_cmd} install --dry-run pip 2>&1"
-        )
+        """Check if we're in an externally managed environment (PEP 668)"""
+        import sysconfig
+        externally_managed = False
+        detected_method = ""
         
-        if "externally-managed-environment" in stderr.lower():
-            print(f"\n{self.t('attempting_break_packages')}")
+        print(f"\n  🔍 Checking Python environment...")
+        
+        # Method 1: Check for EXTERNALLY-MANAGED marker file in stdlib
+        try:
+            stdlib_path = sysconfig.get_path('stdlib')
+            if stdlib_path:
+                # Check in stdlib directory
+                marker_file = Path(stdlib_path) / "EXTERNALLY-MANAGED"
+                if marker_file.exists():
+                    externally_managed = True
+                    detected_method = f"marker file: {marker_file}"
+                
+                # Also check parent directory
+                if not externally_managed:
+                    marker_file = Path(stdlib_path).parent / "EXTERNALLY-MANAGED"
+                    if marker_file.exists():
+                        externally_managed = True
+                        detected_method = f"marker file: {marker_file}"
+        except Exception:
+            pass
+        
+        # Method 2: Check common Linux distribution paths
+        if not externally_managed:
+            py_ver = f"{sys.version_info.major}.{sys.version_info.minor}"
+            common_paths = [
+                Path(f"/usr/lib/python{py_ver}/EXTERNALLY-MANAGED"),
+                Path(f"/usr/lib/python3/EXTERNALLY-MANAGED"),
+                Path(f"/usr/lib64/python{py_ver}/EXTERNALLY-MANAGED"),
+                Path("/usr/lib/python3/dist-packages/EXTERNALLY-MANAGED"),
+                Path(f"/usr/lib/python{py_ver}/dist-packages/EXTERNALLY-MANAGED"),
+            ]
+            for path in common_paths:
+                if path.exists():
+                    externally_managed = True
+                    detected_method = f"marker file: {path}"
+                    break
+        
+        # Method 3: Try actual pip command to detect the error
+        if not externally_managed:
+            # Run pip install with dry-run to see if it would fail
+            try:
+                result = subprocess.run(
+                    [sys.executable, "-m", "pip", "install", "--dry-run", "pip"],
+                    capture_output=True,
+                    text=True,
+                    timeout=30
+                )
+                combined = (result.stdout + result.stderr).lower()
+                if "externally-managed-environment" in combined or "externally managed" in combined:
+                    externally_managed = True
+                    detected_method = "pip dry-run test"
+            except Exception:
+                pass
+        
+        # Method 4: Check for Debian/Ubuntu specific indicator
+        if not externally_managed:
+            try:
+                # On Debian/Ubuntu with PEP 668, pip shows this in config
+                result = subprocess.run(
+                    [sys.executable, "-m", "pip", "config", "list"],
+                    capture_output=True,
+                    text=True,
+                    timeout=10
+                )
+                # Also check if running on a system Python that's managed
+                if platform.system() == "Linux":
+                    # Check if we're using system Python (not venv/pyenv)
+                    if not hasattr(sys, 'real_prefix') and not (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+                        # System Python - check for common managed distros
+                        distro_files = ["/etc/debian_version", "/etc/ubuntu_version", "/etc/fedora-release"]
+                        for df in distro_files:
+                            if Path(df).exists():
+                                # Likely a managed system, do a real test
+                                py_ver = f"{sys.version_info.major}.{sys.version_info.minor}"
+                                if Path(f"/usr/lib/python{py_ver}/EXTERNALLY-MANAGED").exists():
+                                    externally_managed = True
+                                    detected_method = "distribution check"
+                                    break
+            except Exception:
+                pass
+        
+        # Apply the detection result
+        if externally_managed:
+            print(f"\n  ⚠️  Detected externally managed environment (PEP 668)")
+            print(f"     Detection: {detected_method}")
+            print(f"  {self.t('attempting_break_packages')}")
             self.use_break_system_packages = True
-        elif "permission" in stderr.lower():
-            print(f"\n{self.t('attempting_user_install')}")
-            self.use_user_install = True
+        else:
+            print(f"  ✅ Standard Python environment detected")
+            
+            # Check for permission issues (non-root without externally managed)
+            if hasattr(os, 'geteuid') and os.geteuid() != 0:
+                try:
+                    site_packages = sysconfig.get_path('purelib')
+                    if site_packages and not os.access(site_packages, os.W_OK):
+                        print(f"\n  ℹ️  No write access to system packages")
+                        print(f"  {self.t('attempting_user_install')}")
+                        self.use_user_install = True
+                except Exception:
+                    pass
     
     def get_pip_install_cmd(self, package):
         """Get the appropriate pip install command with all necessary flags"""
